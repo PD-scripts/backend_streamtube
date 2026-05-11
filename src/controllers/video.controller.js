@@ -3,7 +3,6 @@ import { Video } from '../models/video.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 const getAllVideos = asyncHandler(async (req, res) => {
   const {
@@ -51,28 +50,24 @@ const getAllVideos = asyncHandler(async (req, res) => {
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
-  const { title, description, duration } = req.body;
-  const videoFilePath = req.files?.videoFile?.[0]?.path;
-  const thumbnailPath = req.files?.thumbnail?.[0]?.path;
+  const { title, description, duration, videoFile, thumbnail } = req.body;
 
-  if (!title?.trim() || !description?.trim() || !duration) {
-    throw new ApiError(400, 'Title, description and duration are required');
-  }
-
-  if (!videoFilePath || !thumbnailPath) {
-    throw new ApiError(400, 'Video file and thumbnail are required');
-  }
-
-  const videoFile = await uploadOnCloudinary(videoFilePath);
-  const thumbnail = await uploadOnCloudinary(thumbnailPath);
-
-  if (!videoFile?.url || !thumbnail?.url) {
-    throw new ApiError(500, 'Unable to upload video or thumbnail');
+  if (
+    !title?.trim() ||
+    !description?.trim() ||
+    !duration ||
+    !videoFile?.trim() ||
+    !thumbnail?.trim()
+  ) {
+    throw new ApiError(
+      400,
+      'Title, description, duration, video file URL, and thumbnail URL are required'
+    );
   }
 
   const video = await Video.create({
-    videoFile: videoFile.url,
-    thumbnail: thumbnail.url,
+    videoFile,
+    thumbnail,
     title,
     description,
     duration: Number(duration),
@@ -119,13 +114,8 @@ const updateVideo = asyncHandler(async (req, res) => {
   if (duration) updates.duration = Number(duration);
   if (typeof isPublished === 'boolean') updates.isPublished = isPublished;
 
-  const thumbnailPath = req.file?.path;
-  if (thumbnailPath) {
-    const thumbnail = await uploadOnCloudinary(thumbnailPath);
-    if (!thumbnail?.url) {
-      throw new ApiError(500, 'Unable to upload thumbnail');
-    }
-    updates.thumbnail = thumbnail.url;
+  if (thumbnail?.trim()) {
+    updates.thumbnail = thumbnail;
   }
 
   if (Object.keys(updates).length === 0) {
