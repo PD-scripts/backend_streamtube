@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   mongodb:
@@ -6,7 +6,7 @@ services:
     container_name: streamtube-mongodb
     restart: unless-stopped
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - ./data/db:/data/db
 
@@ -16,7 +16,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - "8000:8000"
+      - '8000:8000'
     env_file:
       - .env
     environment:

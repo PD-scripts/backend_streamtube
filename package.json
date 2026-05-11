@@ -5,8 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-  "dev": "nodemon --experimental-json-modules --import=dotenv/config src/index.js"
-},
+    "dev": "nodemon --experimental-json-modules --import=dotenv/config src/index.js",
+    "lint": "eslint ."
+  },
   "keywords": [
     "javascript",
     "backend",
@@ -15,8 +16,9 @@
   "author": "Hitesh Choudhary",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^10.3.0",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.3"
+    "prettier": "^3.8.3"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
