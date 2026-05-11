@@ -17,7 +17,7 @@ const commentSchema = new Schema(
         }
     },
     {
-        timestamps: true// createdAt, updatedAt
+        timestamps: true
     }
 )
 
@@ -25,4 +25,3 @@ const commentSchema = new Schema(
 commentSchema.plugin(mongooseAggregatePaginate)
 
 export const Comment = mongoose.model("Comment", commentSchema)
-//mongodb me ye collection ka naam "comments" hoga, mongoose automatically pluralize kr deta hai model name ko

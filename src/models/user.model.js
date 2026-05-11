@@ -9,28 +9,28 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true, 
-            index: true// for searching users by username, it will create an index on username field and it will make the search faster
+            trim: true,
+            index: true
         },
         email: {
             type: String,
             required: true,
             unique: true,
             lowercase: true,
-            trim: true, 
+            trim: true,
         },
         fullName: {
             type: String,
             required: true,
-            trim: true, 
+            trim: true,
             index: true
         },
         avatar: {
-            type: String, // cloudinary url
+            type: String,
             required: true,
         },
         coverImage: {
-            type: String, // cloudinary url
+            type: String,
         },
         watchHistory: [
             {
@@ -40,7 +40,7 @@ const userSchema = new Schema(
         ],
         password: {
             type: String,
-            required: [true, 'Password is required']//custom error message
+            required: [true, 'Password is required']
         },
         refreshToken: {
             type: String
@@ -52,8 +52,6 @@ const userSchema = new Schema(
     }
 )
 
-//******************************************************************************************************************************8 */
-//pre save hook for hashing the password before saving the user to the database
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
 
