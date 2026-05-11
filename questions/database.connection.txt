@@ -1,0 +1,33 @@
+import mongoose from "mongoose";
+import { DB_NAME } from "../constants.js";
+
+
+//ek file banao jaha connect db ka function likha ho aur usko export kar do taki baki files me use kar sako
+
+const connectDB = async () => {
+    const connectionInstance = await mongoose.connect(
+        `${process.env.MONGODB_URI}/${DB_NAME}`
+    );
+
+    console.log(
+        MongoDB connected
+    );
+};
+
+export default connectDB;
+
+
+*****************************************************************************************************************************************
+
+
+// doosri main file me dbconnect ko call kro 
+
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
+    })
+})
+.catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
+})
