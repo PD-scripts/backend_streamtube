@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { Video } from '../models/video.model.js';
-import { Subscription } from '../models/subscription.model.js';
 import { Like } from '../models/like.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -9,9 +8,6 @@ const getChannelStats = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   const totalVideos = await Video.countDocuments({ owner: userId });
-  const totalSubscribers = await Subscription.countDocuments({
-    channel: userId,
-  });
 
   const viewsResult = await Video.aggregate([
     { $match: { owner: mongoose.Types.ObjectId(userId) } },
@@ -45,7 +41,7 @@ const getChannelStats = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { totalVideos, totalSubscribers, totalViews, totalLikes },
+        { totalVideos, totalViews, totalLikes },
         'Channel stats fetched successfully'
       )
     );
