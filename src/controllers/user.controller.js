@@ -95,9 +95,9 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const cookieOptions = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    httpOnly: true,//js cannot access the cookie
+    secure: process.env.NODE_ENV === 'production',//means secure is true
+    sameSite: 'strict',//cookie will only be sent in a first-party context and not be sent along with requests initiated by third party websites
   };
 
   return res
